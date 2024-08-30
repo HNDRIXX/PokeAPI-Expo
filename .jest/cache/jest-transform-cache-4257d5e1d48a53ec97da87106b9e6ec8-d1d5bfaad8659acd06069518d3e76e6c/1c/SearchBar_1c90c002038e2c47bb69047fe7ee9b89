@@ -1,0 +1,42 @@
+97c746247671fdc2144e47a40bc46bd8
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var jsx_runtime_1 = require("react/jsx-runtime");
+var react_1 = require("react");
+var react_native_1 = require("react-native");
+var constants_1 = require("../constants");
+var SearchBar = /** @class */ (function (_super) {
+    __extends(SearchBar, _super);
+    function SearchBar() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SearchBar.prototype.render = function () {
+        var _a = this.props, value = _a.value, onChangeText = _a.onChangeText;
+        return ((0, jsx_runtime_1.jsx)(react_native_1.TextInput, { placeholder: constants_1.Strings.searchPlaceholder, placeholderTextColor: '#fff', style: {
+                backgroundColor: constants_1.Colors.medium.gray,
+                width: '90%',
+                marginVertical: 10,
+                paddingHorizontal: 20,
+                borderRadius: 10,
+                color: '#fff',
+            }, value: value, onChangeText: onChangeText }));
+    };
+    return SearchBar;
+}(react_1.Component));
+exports.default = SearchBar;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQzpcXFVzZXJzXFxBZG1pblxcRGVza3RvcFxcY250aFxcc3JjXFxjb21wb25lbnRzXFxTZWFyY2hCYXIudHN4Iiwic291cmNlcyI6WyJDOlxcVXNlcnNcXEFkbWluXFxEZXNrdG9wXFxjbnRoXFxzcmNcXGNvbXBvbmVudHNcXFNlYXJjaEJhci50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsK0JBQXlDO0FBQ3pDLDZDQUF5QztBQUN6QywwQ0FBK0M7QUFNL0M7SUFBdUMsNkJBQVk7SUFBbkQ7O0lBcUJBLENBQUM7SUFwQkcsMEJBQU0sR0FBTjtRQUNVLElBQUEsS0FBMEIsSUFBSSxDQUFDLEtBQUssRUFBbEMsS0FBSyxXQUFBLEVBQUUsWUFBWSxrQkFBZSxDQUFDO1FBRTNDLE9BQU8sQ0FDSCx1QkFBQyx3QkFBUyxJQUNOLFdBQVcsRUFBRSxtQkFBTyxDQUFDLGlCQUFpQixFQUN0QyxvQkFBb0IsRUFBRSxNQUFNLEVBQzVCLEtBQUssRUFBRTtnQkFDSCxlQUFlLEVBQUUsa0JBQU0sQ0FBQyxNQUFNLENBQUMsSUFBSTtnQkFDbkMsS0FBSyxFQUFFLEtBQUs7Z0JBQ1osY0FBYyxFQUFFLEVBQUU7Z0JBQ2xCLGlCQUFpQixFQUFFLEVBQUU7Z0JBQ3JCLFlBQVksRUFBRSxFQUFFO2dCQUNoQixLQUFLLEVBQUUsTUFBTTthQUNoQixFQUNELEtBQUssRUFBRSxLQUFLLEVBQ1osWUFBWSxFQUFFLFlBQVksR0FDNUIsQ0FDTCxDQUFDO0lBQ04sQ0FBQztJQUNMLGdCQUFDO0FBQUQsQ0FBQyxBQXJCRCxDQUF1QyxpQkFBUyxHQXFCL0MiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgQ29tcG9uZW50IH0gZnJvbSAncmVhY3QnO1xyXG5pbXBvcnQgeyBUZXh0SW5wdXQgfSBmcm9tICdyZWFjdC1uYXRpdmUnO1xyXG5pbXBvcnQgeyBTdHJpbmdzLCBDb2xvcnMgfSBmcm9tICcuLi9jb25zdGFudHMnO1xyXG5cclxuaW50ZXJmYWNlIFMge1xyXG4gICAgdmFsdWU6IHN0cmluZztcclxuICAgIG9uQ2hhbmdlVGV4dDogKHRleHQ6IHN0cmluZykgPT4gdm9pZDtcclxufVxyXG5leHBvcnQgZGVmYXVsdCBjbGFzcyBTZWFyY2hCYXIgZXh0ZW5kcyBDb21wb25lbnQ8Uz4ge1xyXG4gICAgcmVuZGVyKCkge1xyXG4gICAgICAgIGNvbnN0IHsgdmFsdWUsIG9uQ2hhbmdlVGV4dCB9ID0gdGhpcy5wcm9wcztcclxuXHJcbiAgICAgICAgcmV0dXJuIChcclxuICAgICAgICAgICAgPFRleHRJbnB1dFxyXG4gICAgICAgICAgICAgICAgcGxhY2Vob2xkZXI9e1N0cmluZ3Muc2VhcmNoUGxhY2Vob2xkZXJ9XHJcbiAgICAgICAgICAgICAgICBwbGFjZWhvbGRlclRleHRDb2xvcj17JyNmZmYnfVxyXG4gICAgICAgICAgICAgICAgc3R5bGU9e3tcclxuICAgICAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kQ29sb3I6IENvbG9ycy5tZWRpdW0uZ3JheSxcclxuICAgICAgICAgICAgICAgICAgICB3aWR0aDogJzkwJScsXHJcbiAgICAgICAgICAgICAgICAgICAgbWFyZ2luVmVydGljYWw6IDEwLFxyXG4gICAgICAgICAgICAgICAgICAgIHBhZGRpbmdIb3Jpem9udGFsOiAyMCxcclxuICAgICAgICAgICAgICAgICAgICBib3JkZXJSYWRpdXM6IDEwLFxyXG4gICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnI2ZmZicsXHJcbiAgICAgICAgICAgICAgICB9fVxyXG4gICAgICAgICAgICAgICAgdmFsdWU9e3ZhbHVlfVxyXG4gICAgICAgICAgICAgICAgb25DaGFuZ2VUZXh0PXtvbkNoYW5nZVRleHR9XHJcbiAgICAgICAgICAgIC8+XHJcbiAgICAgICAgKTtcclxuICAgIH1cclxufVxyXG4iXX0=

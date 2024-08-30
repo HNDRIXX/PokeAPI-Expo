@@ -1,0 +1,8 @@
+8945aeda69e754a5445f125dd77406f2
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Strings = {
+    searchPlaceholder: 'Search your pokemon here',
+};
+exports.default = Strings;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQzpcXFVzZXJzXFxBZG1pblxcRGVza3RvcFxcY250aFxcc3JjXFxjb25zdGFudHNcXFN0cmluZ3MudHMiLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcQWRtaW5cXERlc2t0b3BcXGNudGhcXHNyY1xcY29uc3RhbnRzXFxTdHJpbmdzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQUEsSUFBTSxPQUFPLEdBQUk7SUFDYixpQkFBaUIsRUFBRSwwQkFBMEI7Q0FDaEQsQ0FBQTtBQUVELGtCQUFlLE9BQU8sQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImNvbnN0IFN0cmluZ3MgPSAge1xyXG4gICAgc2VhcmNoUGxhY2Vob2xkZXI6ICdTZWFyY2ggeW91ciBwb2tlbW9uIGhlcmUnLFxyXG59XHJcblxyXG5leHBvcnQgZGVmYXVsdCBTdHJpbmdzIl19

@@ -1,0 +1,46 @@
+286c0ba61a7036331da179b74435b373
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var jsx_runtime_1 = require("react/jsx-runtime");
+var react_1 = require("react");
+var react_native_1 = require("react-native");
+var constants_1 = require("../constants");
+var Note = /** @class */ (function (_super) {
+    __extends(Note, _super);
+    function Note() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Note.prototype.render = function () {
+        var text = this.props.text;
+        return ((0, jsx_runtime_1.jsx)(react_native_1.Text, __assign({ style: [constants_1.Styles.Main.textWhiteCenter, constants_1.Styles.Main.textWhiteCapitalize, constants_1.Styles.Main.alignJustify, { flex: 1, textAlignVertical: 'center' }] }, { children: text || 'Lorem Ipsum' })));
+    };
+    return Note;
+}(react_1.Component));
+exports.default = Note;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQzpcXFVzZXJzXFxBZG1pblxcRGVza3RvcFxcY250aFxcc3JjXFxjb21wb25lbnRzXFxOb3RlLnRzeCIsInNvdXJjZXMiOlsiQzpcXFVzZXJzXFxBZG1pblxcRGVza3RvcFxcY250aFxcc3JjXFxjb21wb25lbnRzXFxOb3RlLnRzeCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLCtCQUF5QztBQUN6Qyw2Q0FBb0M7QUFDcEMsMENBQXNDO0FBS3RDO0lBQWtDLHdCQUFZO0lBQTlDOztJQVFBLENBQUM7SUFQRyxxQkFBTSxHQUFOO1FBQ1ksSUFBQSxJQUFJLEdBQUssSUFBSSxDQUFDLEtBQUssS0FBZixDQUFnQjtRQUU1QixPQUFPLENBQ0gsdUJBQUMsbUJBQUksYUFBQyxLQUFLLEVBQUUsQ0FBQyxrQkFBTSxDQUFDLElBQUksQ0FBQyxlQUFlLEVBQUUsa0JBQU0sQ0FBQyxJQUFJLENBQUMsbUJBQW1CLEVBQUUsa0JBQU0sQ0FBQyxJQUFJLENBQUMsWUFBWSxFQUFFLEVBQUUsSUFBSSxFQUFFLENBQUMsRUFBRSxpQkFBaUIsRUFBRSxRQUFRLEVBQUUsQ0FBQyxnQkFBRyxJQUFJLElBQUksYUFBYSxJQUFRLENBQ2xMLENBQUM7SUFDTixDQUFDO0lBQ0wsV0FBQztBQUFELENBQUMsQUFSRCxDQUFrQyxpQkFBUyxHQVExQyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyBDb21wb25lbnQgfSBmcm9tICdyZWFjdCc7XHJcbmltcG9ydCB7IFRleHQgfSBmcm9tICdyZWFjdC1uYXRpdmUnO1xyXG5pbXBvcnQgeyBTdHlsZXMgfSBmcm9tICcuLi9jb25zdGFudHMnO1xyXG5cclxuaW50ZXJmYWNlIFMge1xyXG4gICAgdGV4dDogc3RyaW5nXHJcbn1cclxuZXhwb3J0IGRlZmF1bHQgY2xhc3MgTm90ZSBleHRlbmRzIENvbXBvbmVudDxTPiB7ICAgIFxyXG4gICAgcmVuZGVyKCkge1xyXG4gICAgICAgIGNvbnN0IHsgdGV4dCB9ID0gdGhpcy5wcm9wcztcclxuXHJcbiAgICAgICAgcmV0dXJuIChcclxuICAgICAgICAgICAgPFRleHQgc3R5bGU9e1tTdHlsZXMuTWFpbi50ZXh0V2hpdGVDZW50ZXIsIFN0eWxlcy5NYWluLnRleHRXaGl0ZUNhcGl0YWxpemUsIFN0eWxlcy5NYWluLmFsaWduSnVzdGlmeSwgeyBmbGV4OiAxLCB0ZXh0QWxpZ25WZXJ0aWNhbDogJ2NlbnRlcicgfV19Pnt0ZXh0IHx8ICdMb3JlbSBJcHN1bSd9PC9UZXh0PlxyXG4gICAgICAgICk7XHJcbiAgICB9XHJcbn1cclxuIl19
