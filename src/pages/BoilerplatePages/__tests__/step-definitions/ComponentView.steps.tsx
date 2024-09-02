@@ -1,64 +1,127 @@
-import React from 'react';
-import { defineFeature, loadFeature } from 'jest-cucumber';
-import { shallow } from 'enzyme';
-import HomePage from '../../ComponentView';
-import { Note, PokemonCard } from '../../../../components';
+import React from "react"
+import loadash from 'lodash'
+import HomePage from "../../ComponentView"
+import { shallow, ShallowWrapper } from "enzyme"
+import { defineFeature, loadFeature } from "jest-cucumber"
+import { FlatList, FlatListProps, Text } from "react-native"
+import { mockPokemonCard, mockPokemonList } from "../../../../values"
 
 const feature = loadFeature('./src/pages/BoilerplatePages/__tests__/features/ComponentView.feature');
 
-defineFeature(feature, test => {
-  let wrapper: any;
 
-  test('Display data and search results', ({ given, when, then }) => {
-    given('the HomePage is rendered', () => {
-      wrapper = shallow(<HomePage navigation={{}} />);
+defineFeature(feature, (test) => {
+  let wrapper: ShallowWrapper
+  let instance: HomePage
+
+  let props = {
+    navigation: {
+      navigate: jest.fn(),
+    } as any
+  };
+
+  beforeEach(() => {
+    jest.resetModules();
+
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    global.fetch = jest.fn((url) => {
+        if (url.includes(mockPokemonList.next)) {
+            return Promise.resolve({
+              json: () => Promise.resolve(mockPokemonList),
+            });
+        }
+        return Promise.resolve({
+          json: () => Promise.resolve(mockPokemonCard),
+        });
+    }) as jest.Mock;
+
+    wrapper = shallow(<HomePage navigation={props.navigation} />);
+    instance = wrapper.instance() as HomePage;
+
+    loadash.debounce = jest.fn((func) => func) as jest.Mock;
+
+    jest.spyOn(instance, 'fetchData');
+    jest.spyOn(instance, 'navigateDetails');
+    
+    afterEach(() => {
+      jest.clearAllMocks();
+      consoleErrorSpy.mockRestore();
+    });
+  });
+
+  test("Render Pokemon List", ({ given, when, then, and }) => {
+    given("I am on the Pokemon list", () => {})
+
+    when("I successfully load Pokemon list", async () => {
+      instance.componentDidMount()
+      await new Promise(setImmediate);
+      wrapper.update()
+    })
+
+    then("I should see a list of Pokemon", () => {
+      const updatedFlatListProps = wrapper
+        .find(FlatList)
+        .props() as FlatListProps<{
+          name: string
+          url: string
+        }>
+
+      expect(updatedFlatListProps.data?.length).toEqual(1)
+    })
+
+    then("I should see flatlist item rendered", () => {
+      const props = { item: mockPokemonCard, index: 0 }
+
+      const flatlist = wrapper.find(FlatList).props();
+
+      const renderItem : any = flatlist.renderItem;
+      const itemWrapper = shallow(renderItem({ ...props }));
+
+      const key = flatlist.keyExtractor?.(mockPokemonList.results[0], 0)
+      expect(key).toBe("0");
+
+      const nameText = itemWrapper.findWhere(node => node.type() === Text && node.prop('testID') === 'name');
+      expect(nameText.text()).toBe(mockPokemonCard.name);
+    })
+
+    then("I reach the end of the list", () => {
+      const flatlist = wrapper.find(FlatList).props();
+
+        flatlist.onEndReached?.({ distanceFromEnd: 0 });
+
+        expect(instance.fetchData).toBeCalled();
+    })
+  });
+
+  // For search functionality
+  test('Search works correctly', ({ given, when, then }) => {
+    given('I am on the Pokemon details page', () => {});
+
+    when('I perform a search', () => {
+      instance.onSearch(mockPokemonCard.name);
     });
 
-    when('the data is loaded', async () => {
-      wrapper.setState({
-        data: [{ 
-          name: 'Pikachu', 
-          order: 1, 
-          types: [], 
-          image: '' 
-        }],
-        filteredData: [{ 
-          name: 'Pikachu', 
-          order: 1, 
-          types: [], 
-          image: '' 
-        }]
-      });
-      wrapper.instance().fetchData = jest.fn();
-      await wrapper.instance().componentDidMount();
-      wrapper.update();
-    });
-
-    when('the search term is {string}', (searchTerm) => {
-      (wrapper.instance() as HomePage).handleSearch(searchTerm);
-      wrapper.update();
-    });
-
-    then('the list should display {string} related items', (searchTerm) => {
-      const pokemonCards = wrapper.find(PokemonCard);
-      expect(pokemonCards.someWhere((card: any) => card.props().item.name === searchTerm)).toBe(true);
+    then('I should navigate to the details page', () => {
+      expect(instance.navigateDetails).toBeCalled();
     });
   });
 
-  test('Handle error state', ({ given, when, then }) => {
-    given('the HomePage is rendered', () => {
-      wrapper = shallow(<HomePage navigation={{}} />);
+  // For handle error
+  test('Handle fetch error', async ({ given, when, then }) => {
+    given('I get a fetch error', () => {
+      global.fetch = jest.fn(() => Promise.reject(new Error('Fetch error'))) as jest.Mock;
     });
 
-    when('there is an error while fetching data', async () => {
-      wrapper.setState({ error: 'Failed to fetch data' });
-      await wrapper.update();
+    when('I mounted the component', async () => {
+      await instance.componentDidMount();
     });
 
-    then('an error message should be displayed', () => {
-      const note = wrapper.find(Note);
-      expect(note.exists()).toBe(true);
-      expect(note.props().text).toBe('No data found');
+    then('I should log errors', () => {
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      
+      expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error));
+      
+      consoleErrorSpy.mockRestore();
     });
   });
-});
+})

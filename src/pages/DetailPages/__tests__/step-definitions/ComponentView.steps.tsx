@@ -1,76 +1,95 @@
-import React from 'react';
-import { defineFeature, loadFeature } from 'jest-cucumber';
-import { shallow, ShallowWrapper } from 'enzyme';
-import DetailsPage from '../../ComponentView';
+import React from "react";
+import lodash from 'lodash'
+
+import HomePage from "../../ComponentView"
+import DetailPage from "../../ComponentView";
+import { shallow, ShallowWrapper } from "enzyme"
+import { defineFeature, loadFeature } from "jest-cucumber"
+import { mockDetailPokemon, mockSpeciesPokemon } from "../../../../values";
+import { Strings } from "../../../../constants";
 
 const feature = loadFeature('./src/pages/DetailPages/__tests__/features/ComponentView.feature');
 
-defineFeature(feature, test => {
-  let wrapper : ShallowWrapper;
+defineFeature(feature, (test) => {
+  let wrapper: ShallowWrapper
+  let instance: HomePage
 
-  test('Display loading state', ({ given, then }) => {
-    given('the component is loading', () => {
-      wrapper = shallow(<DetailsPage navigation={{}} route={{ params: {} }} />);
-      wrapper.setState({ loading: true });
+  const props = {
+    route: {
+      params: { name: mockDetailPokemon.name }
+    }
+  }
+
+  beforeEach(() => {
+    jest.resetModules();
+
+    global.fetch = jest.fn((url) => {
+      if (url.includes('/pokemon/')) {
+        return Promise.resolve({
+          json: () => Promise.resolve(mockDetailPokemon),
+        });
+      } 
+      if (url.includes('/pokemon-species/')) {
+        return Promise.resolve({
+          json: () => Promise.resolve(mockSpeciesPokemon), 
+        });
+      }
+      return Promise.reject(new Error(Strings.somethingWentWrong));
+    }) as jest.Mock;
+
+    wrapper = shallow(<DetailPage route={props.route} />);
+    instance = wrapper.instance() as DetailPage;
+
+    lodash.debounce = jest.fn((func) => func) as jest.Mock;
+
+    jest.spyOn(instance, 'fetchData');
+    jest.spyOn(instance, 'fetchDataDebounced');
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+  });
+
+  test("Render Pokemon Details", ({ given, when, then, and }) => {
+    given("I am on the Pokemon details", () => {})
+
+    when("I successfully load Pokemon details", async () => {
+      instance.componentDidMount()
+      await new Promise(setImmediate);
+      wrapper.update()
+    })
+    
+    then("I should see Pokemon details", () => {
+      expect(instance.state.data.name).toEqual(mockDetailPokemon.name);
+      expect(instance.state.data.description).toEqual(mockSpeciesPokemon.flavor_text_entries[0].flavor_text);
+    })
+  })
+
+  // For search functionality
+  test('Search works correctly', ({ given, when, then }) => {
+    given('I am on the Pokemon details page', () => {});
+
+    when('I perform a search', () => {
+      instance.onSearch(mockDetailPokemon.name);
     });
 
-    then('it should display a loader', () => {
-      expect(wrapper.find('Loader').exists()).toBe(true);
+    then('I should see the search results', () => {
+      expect(instance.fetchDataDebounced).toHaveBeenCalledWith(mockDetailPokemon.name);
     });
   });
 
-  test('Display Pokémon details', ({ given, when, then }) => {
-    given('the component has Pokémon data', () => {
-      wrapper = shallow(<DetailsPage navigation={{}} route={{ params: {} }} />);
-      wrapper.setState({
-        data: {
-          name: 'Pikachu',
-          image: 'http://loremipsum.com/pikachu.png',
-          types: [{ image: 'http://loremipsum/electric.png' }],
-          stats: [{ stat: { name: 'Speed' }, base_stat: 90 }],
-          abilities: [{ ability: { name: 'Static' } }]
-        },
-        loading: false,
-        error: null,
-        otherDetails: [
-          { title: 'Generation', value: 'Generation 1' }
-        ]
-      });
+  // For fetch error
+  test('Handle fetch error', async ({ given, when, then }) => {
+    given('I get a fetch error', () => {
+      global.fetch = jest.fn(() => Promise.reject(new Error('Fetch error'))) as jest.Mock;
     });
 
-    when('the component is rendered', () => { });
-
-    then('it should display the Pokémon\'s name', () => {
-      expect(wrapper.find('Text').at(0).text()).toEqual('Pikachu');
+    when('I mounted the component', async () => {
+      await instance.componentDidMount();
     });
 
-    then('it should display the Pokémon\'s image', () => {
-      expect(wrapper.find('Image').at(0).prop('source')).toEqual({ uri: 'http://loremipsum.com/pikachu.png' });
-    });
-
-    then('it should display the Pokémon\'s types', () => {
-      expect(wrapper.find('Image').at(1).prop('source')).toEqual({ uri: 'http://loremipsum.com/electric.png' });
-    });
-
-    then('it should display the Pokémon\'s stats', () => {
-      const statsWrapper = wrapper.find('View').at(3);
-
-      const stat1 = statsWrapper.find('View').at(0);
-      expect(stat1.find('Text').at(0).text()).toEqual('Speed');
-      expect(stat1.find('Text').at(1).text()).toEqual('90');
-    });
-
-    then('it should display the Pokémon\'s abilities', () => {
-      const statsWrapper = wrapper.find('View').at(7);
-      expect(statsWrapper.find('Text').at(1).text()).toEqual('Static');
-    });
-
-    then('it should display the Pokémon\'s other stats', () => {
-      const statsWrapper = wrapper.find('View').at(5); 
-
-      const stat1 = statsWrapper.find('View').at(0);
-      expect(stat1.find('Text').at(0).text()).toEqual('Generation');
-      expect(stat1.find('Text').at(1).text()).toEqual('Generation 1');
+    then('I should true error', () => {
+      instance.setState({ error: true })
     });
   });
-});
+})

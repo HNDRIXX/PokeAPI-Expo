@@ -64,9 +64,11 @@ const CardStyle = StyleSheet.create({
     },
 
     imageType: {
-        width: 50, 
-        height: 20,
-        marginHorizontal: 5
+        width: 65, 
+        height: 15, 
+        margin: 5, 
+        borderRadius: 5, 
+        overflow: 'hidden' 
     },
 
     textName:{
@@ -124,15 +126,17 @@ const StyleDetails = StyleSheet.create({
     },
 
     imagePokemon: {
-        width: 200, 
-        height: 200, 
+        width: 250, 
+        height: 250, 
         marginVertical: 10,
     },
 
     imageType:{
         marginHorizontal: 5,
-        width: 80,
-        height: 30
+        width: 90,
+        height: 30,
+        borderRadius: 5,
+        overflow: 'hidden'
     },
 
     textName:{
@@ -171,6 +175,7 @@ const StyleDetails = StyleSheet.create({
         paddingHorizontal: 15,
         borderColor: Colors.light.icon,
         borderWidth: 1,
+        marginBottom: 10,
     },
 
     textGapColumn: {
@@ -186,7 +191,7 @@ const StyleBadge = StyleSheet.create({
         ...Main.alignJustify,
         ...Main.flexRow,
         ...Main.roundBorder,
-    }
+    },
 });
 
 export default { Main, CardStyle, StyleDetails, StyleBadge };

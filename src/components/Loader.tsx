@@ -1,6 +1,8 @@
 import { ActivityIndicator, StyleProp, TextStyle } from 'react-native'
-import React from 'react'
+import React, { Component } from 'react'
 
-export default function Loader({ style } : { style?: StyleProp<TextStyle> }) {
-    return <ActivityIndicator color="#fff" size={"large"} style={style}/>
+export default class Loader extends Component<{ style?: StyleProp<TextStyle> }> {
+    render() {
+        return <ActivityIndicator color="#fff" size={"large"} style={this.props.style} />
+    }
 }
