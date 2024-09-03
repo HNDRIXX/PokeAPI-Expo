@@ -120,7 +120,6 @@ const StyleDetails = StyleSheet.create({
     },
 
     twoColWrapper: {
-        justifyContent: 'space-between', 
         width: '50%', 
         padding: 5 
     },

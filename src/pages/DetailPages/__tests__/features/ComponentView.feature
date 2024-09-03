@@ -1,14 +1,14 @@
 Feature: Pokemon Details
 
     Scenario: Render Pokemon Details
-        Given I am on the Pokemon details
-        When I successfully load Pokemon details
-        Then I should see Pokemon details
+        Given I am on the Details Page
+        When I successfully load Details Page
+        Then I should see Pokemon details like Pokemon name
 
     Scenario: Search works correctly
-        Given I am on the Pokemon details page
+        Given I am on the Details Page
         When I perform a search
-        Then I should see the search results
+        Then I should call fetch data
 
     Scenario: Handle fetch error
         Given I get a fetch error

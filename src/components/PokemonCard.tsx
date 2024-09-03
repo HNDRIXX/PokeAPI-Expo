@@ -15,11 +15,11 @@ export default class PokemonCard extends Component<S> {
 
         return (
             <TouchableOpacity
-                key={item.order}
+                key={item.id}
                 style={[Styles.CardStyle.button, Styles.Main.roundBorder]}
                 onPress={() => this.props.navigation.navigate('Details', { name: item.name })}
             >
-                <Badge number={item?.order || 0} />
+                <Badge number={item?.id || 0} />
 
                 <View style={Styles.Main.alignCenter}>
                     <Image

@@ -4,11 +4,6 @@ export interface Navigation {
     navigation: NavigationProp<ParamListBase>
 }
 
-export interface Result {
-    name: string;
-    url: string;
-}
-
 export interface TypeObj {
     slot: number
     type: {
@@ -37,7 +32,7 @@ export interface StatsObj {
 
 export interface PokemonResultObj {
     name: string
-    order: number
+    id: number
     url: string
     types: Array<TypeObj>
     image: string
@@ -52,7 +47,7 @@ export interface PokemonList {
 
 export interface PokemonDetails {
     name: string
-    order: number
+    id: number
     url: string
     types: Array<TypeObj>
     image: string

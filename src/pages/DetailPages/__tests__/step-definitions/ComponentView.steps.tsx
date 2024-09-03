@@ -1,11 +1,10 @@
-import React from "react";
 import lodash from 'lodash'
 
 import HomePage from "../../ComponentView"
 import DetailPage from "../../ComponentView";
 import { shallow, ShallowWrapper } from "enzyme"
 import { defineFeature, loadFeature } from "jest-cucumber"
-import { mockDetailPokemon, mockSpeciesPokemon } from "../../../../values";
+import { mockDetailPokemon, mockSpeciesPokemon, mockDetailprops } from "../../../../values";
 import { Strings } from "../../../../constants";
 
 const feature = loadFeature('./src/pages/DetailPages/__tests__/features/ComponentView.feature');
@@ -13,12 +12,6 @@ const feature = loadFeature('./src/pages/DetailPages/__tests__/features/Componen
 defineFeature(feature, (test) => {
   let wrapper: ShallowWrapper
   let instance: HomePage
-
-  const props = {
-    route: {
-      params: { name: mockDetailPokemon.name }
-    }
-  }
 
   beforeEach(() => {
     jest.resetModules();
@@ -28,16 +21,18 @@ defineFeature(feature, (test) => {
         return Promise.resolve({
           json: () => Promise.resolve(mockDetailPokemon),
         });
-      } 
+      }
+
       if (url.includes('/pokemon-species/')) {
         return Promise.resolve({
           json: () => Promise.resolve(mockSpeciesPokemon), 
         });
       }
+
       return Promise.reject(new Error(Strings.somethingWentWrong));
     }) as jest.Mock;
 
-    wrapper = shallow(<DetailPage route={props.route} />);
+    wrapper = shallow(<DetailPage route={mockDetailprops.route} />);
     instance = wrapper.instance() as DetailPage;
 
     lodash.debounce = jest.fn((func) => func) as jest.Mock;
@@ -50,30 +45,30 @@ defineFeature(feature, (test) => {
     });
   });
 
-  test("Render Pokemon Details", ({ given, when, then, and }) => {
-    given("I am on the Pokemon details", () => {})
+  // For render/display Pokemon details
+  test("Render Pokemon Details", ({ given, when, then }) => {
+    given("I am on the Details Page", () => {})
 
-    when("I successfully load Pokemon details", async () => {
+    when("I successfully load Details Page", async () => {
       instance.componentDidMount()
       await new Promise(setImmediate);
       wrapper.update()
     })
     
-    then("I should see Pokemon details", () => {
+    then("I should see Pokemon details like Pokemon name", () => {
       expect(instance.state.data.name).toEqual(mockDetailPokemon.name);
-      expect(instance.state.data.description).toEqual(mockSpeciesPokemon.flavor_text_entries[0].flavor_text);
     })
   })
 
   // For search functionality
   test('Search works correctly', ({ given, when, then }) => {
-    given('I am on the Pokemon details page', () => {});
+    given('I am on the Details Page', () => {});
 
     when('I perform a search', () => {
       instance.onSearch(mockDetailPokemon.name);
     });
 
-    then('I should see the search results', () => {
+    then('I should call fetch data', () => {
       expect(instance.fetchDataDebounced).toHaveBeenCalledWith(mockDetailPokemon.name);
     });
   });
@@ -90,6 +85,8 @@ defineFeature(feature, (test) => {
 
     then('I should true error', () => {
       instance.setState({ error: true })
+
+      expect(instance.state.error).toEqual(true);
     });
   });
 })

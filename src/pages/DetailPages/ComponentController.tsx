@@ -1,8 +1,7 @@
+import lodash from 'lodash';
 import { Component } from 'react';
 import { PokemonDetails } from '../../types';
 import { DataPokemonDetails } from '../../values';
-
-import lodash from 'lodash';
 
 interface Props {
     route: {
@@ -46,7 +45,7 @@ export default class ComponentController extends Component<Props, S> {
             this.setState({
                 data: {
                     name: pokemonJson.name,
-                    order: pokemonJson.id,
+                    id: pokemonJson.id,
                     url: pokemonJson.url,
                     types: pokemonJson.types,
                     image: pokemonJson.sprites.other['official-artwork'].front_default,

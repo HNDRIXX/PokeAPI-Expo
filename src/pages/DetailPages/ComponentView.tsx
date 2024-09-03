@@ -9,7 +9,7 @@ import { Badge, Loader, Note, SearchBar } from '../../components';
 export default class DetailPage extends ComponentController {
 
     render() {
-        const { data, search, loading, error } = this.state
+        const { data, search, loading, error } = this.state;
 
         return (
             <SafeAreaView style={Styles.StyleDetails.container}>
@@ -18,10 +18,10 @@ export default class DetailPage extends ComponentController {
                     onChangeText={this.onSearch}
                 />
 
-                {loading ? <Loader style={{ flex: 1 }} /> :
+                { loading ? <Loader style={{ flex: 1 }} /> :
                     error ? <Note text={Strings.pokemonNotFound} /> : (
                     <>
-                        <Badge number={data.order} style={{ marginTop: 10 }} />
+                        <Badge number={data.id} style={{ marginTop: 10 }} />
 
                         <Image
                             source={{ uri: data.image }}

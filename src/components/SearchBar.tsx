@@ -13,7 +13,7 @@ export default class SearchBar extends Component<S> {
         return (
             <TextInput
                 placeholder={Strings.searchPlaceholder}
-                placeholderTextColor={'#fff'}
+                placeholderTextColor={Colors.light.gray}
                 style={{
                     backgroundColor: Colors.medium.gray,
                     width: '90%',

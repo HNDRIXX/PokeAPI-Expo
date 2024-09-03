@@ -1,4 +1,3 @@
-import React from 'react';
 import { FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -29,8 +28,8 @@ export default class HomePage extends ComponentController {
                     renderItem={({ item, index } : { item: PokemonResultObj, index : number }) => (
                         <PokemonCard item={item} navigation={this.props.navigation} key={index} />
                     )}
-                    onEndReached={() => this.fetchData()}
-                    ListFooterComponent={loading ? <Loader style={{ margin: 20}} /> : <></>}
+                    onEndReached={() => this.fetchData(data.next)}
+                    ListFooterComponent={loading ? <Loader style={{ margin: 20 }} /> : null}
                     onEndReachedThreshold={0.5}
                 />
             </SafeAreaView>

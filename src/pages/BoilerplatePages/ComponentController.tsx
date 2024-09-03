@@ -21,7 +21,7 @@ export default class ComponentController extends Component<Props, S> {
         this.state = {
             data: {
                 count: 0,
-                next: 'https://pokeapi.co/api/v2/pokemon?limit=10',
+                next: '',
                 previous: '',
                 results: [],
             },
@@ -32,11 +32,11 @@ export default class ComponentController extends Component<Props, S> {
         this.navigateDetails = lodash.debounce(() => this.props.navigation.navigate('Details', { name: this.state.search }), 1000) as any;
     }
 
-    fetchData = async () => {
+    fetchData = async (url: string) => {
         try {
             this.setState({ loading: true });
 
-            const res = await fetch(this.state.data.next);
+            const res = await fetch(url);
             const data = await res.json();
     
             const pokemonPromises : Array<PokemonResultObj> = data.results.map(async (pokemon : PokemonResultObj) => {
@@ -45,7 +45,7 @@ export default class ComponentController extends Component<Props, S> {
 
                 return {
                     name: data.name,
-                    order: data.id,
+                    id: data.id,
                     url: data.url,
                     types: data.types,
                     image: data.sprites.other['official-artwork'].front_default,
@@ -62,12 +62,11 @@ export default class ComponentController extends Component<Props, S> {
                     results: [
                         ...prevState.data.results,
                         ...result.filter(newItem => 
-                            !prevState.data.results.some(oldItem => oldItem.order === newItem.order)
+                            !prevState.data.results.some(oldItem => oldItem.id === newItem.id)
                         )
                     ]
                 }
             }));
-            
         } catch (error) {
             console.error(error);
         } finally {
@@ -81,6 +80,6 @@ export default class ComponentController extends Component<Props, S> {
     }
 
     async componentDidMount () {
-        this.fetchData();
+        await this.fetchData('https://pokeapi.co/api/v2/pokemon?limit=10');
     }
 };

@@ -1,19 +1,17 @@
-import React from "react"
 import loadash from 'lodash'
 import HomePage from "../../ComponentView"
 import { shallow, ShallowWrapper } from "enzyme"
 import { defineFeature, loadFeature } from "jest-cucumber"
-import { FlatList, FlatListProps, Text } from "react-native"
+import { FlatList, Text } from "react-native"
 import { mockPokemonCard, mockPokemonList } from "../../../../values"
 
 const feature = loadFeature('./src/pages/BoilerplatePages/__tests__/features/ComponentView.feature');
-
 
 defineFeature(feature, (test) => {
   let wrapper: ShallowWrapper
   let instance: HomePage
 
-  let props = {
+  const props = {
     navigation: {
       navigate: jest.fn(),
     } as any
@@ -25,7 +23,7 @@ defineFeature(feature, (test) => {
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     global.fetch = jest.fn((url) => {
-        if (url.includes(mockPokemonList.next)) {
+        if (url.includes('https://pokeapi.co/api/v2/pokemon?limit=10')) {
             return Promise.resolve({
               json: () => Promise.resolve(mockPokemonList),
             });
@@ -49,59 +47,58 @@ defineFeature(feature, (test) => {
     });
   });
 
-  test("Render Pokemon List", ({ given, when, then, and }) => {
-    given("I am on the Pokemon list", () => {})
+  // For render/display Pokemon list
+  test("Render Pokemon List", ({ given, when, then }) => {
+    given("I am on the Home Page", () => {})
 
-    when("I successfully load Pokemon list", async () => {
+    when("I successfully load Home Page", async () => {
       instance.componentDidMount()
       await new Promise(setImmediate);
       wrapper.update()
-    })
+    });
 
-    then("I should see a list of Pokemon", () => {
-      const updatedFlatListProps = wrapper
-        .find(FlatList)
-        .props() as FlatListProps<{
-          name: string
-          url: string
-        }>
-
-      expect(updatedFlatListProps.data?.length).toEqual(1)
-    })
-
-    then("I should see flatlist item rendered", () => {
-      const props = { item: mockPokemonCard, index: 0 }
-
+    then("I should have a key extract value from the list", () => {
       const flatlist = wrapper.find(FlatList).props();
 
+      const key = flatlist.keyExtractor?.(mockPokemonList.results[0], 0);
+      expect(key).toBe("0");
+    });
+
+    then("I should see a list of Pokemon", () => {
+      const flatlist = wrapper.find(FlatList).props() ;
+
+      expect(flatlist.data?.length).toEqual(1);
+    });
+
+    then("I should see flatlist item rendered", () => {
+      const props = { item: mockPokemonCard, index: 0 };
+
+      const flatlist = wrapper.find(FlatList).props();
       const renderItem : any = flatlist.renderItem;
       const itemWrapper = shallow(renderItem({ ...props }));
 
-      const key = flatlist.keyExtractor?.(mockPokemonList.results[0], 0)
-      expect(key).toBe("0");
-
       const nameText = itemWrapper.findWhere(node => node.type() === Text && node.prop('testID') === 'name');
+      
       expect(nameText.text()).toBe(mockPokemonCard.name);
     })
 
     then("I reach the end of the list", () => {
       const flatlist = wrapper.find(FlatList).props();
+      flatlist.onEndReached?.({ distanceFromEnd: 0 });
 
-        flatlist.onEndReached?.({ distanceFromEnd: 0 });
-
-        expect(instance.fetchData).toBeCalled();
+      expect(instance.fetchData).toBeCalled();
     })
   });
 
   // For search functionality
   test('Search works correctly', ({ given, when, then }) => {
-    given('I am on the Pokemon details page', () => {});
+    given('I am on the Home Page', () => {});
 
     when('I perform a search', () => {
       instance.onSearch(mockPokemonCard.name);
     });
 
-    then('I should navigate to the details page', () => {
+    then('I should navigate to the Details Page', () => {
       expect(instance.navigateDetails).toBeCalled();
     });
   });

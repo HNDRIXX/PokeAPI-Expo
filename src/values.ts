@@ -1,6 +1,6 @@
 export const mockPokemonList = {
     count: 1,
-    next: "https://pokeapi.co/api/v2/pokemon?limit=1",
+    next: '',
     previous: null,
     results: [
         { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' }
@@ -9,7 +9,7 @@ export const mockPokemonList = {
 
 export const mockPokemonCard = {
     name: 'bulbasaur',
-    order: 1,
+    id: 1,
     url: 'https://pokeapi.co/api/v2/pokemon/1/',
     types: [
         { type: { name: 'grass', url: 'https://pokeapi.co/api/v2/type/12/' } },
@@ -28,7 +28,7 @@ export const mockPokemonCard = {
 
 export const mockDetailPokemon = {
     name: 'bulbasaur',
-    order: 1,
+    id: 1,
     url: 'https://pokeapi.co/api/v2/pokemon/1/',
     types: [
         { type: { name: 'grass', url: 'https://pokeapi.co/api/v2/type/12/' } },
@@ -85,9 +85,15 @@ export const mockSpeciesPokemon = {
     ],
 }
 
+export const mockDetailprops = {
+    route: {
+        params: { name: 'bulbasaur' }
+    }
+}
+
 export const DataPokemonDetails = {
     name: '',
-    order: 0,
+    id: 0,
     url: '',
     types: [{
         slot: 0,
