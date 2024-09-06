@@ -1,16 +1,20 @@
 Feature: Pokemon Details
 
-    Scenario: Render Pokemon Details
-        Given I am on the Details Page
-        When I successfully load Details Page
-        Then I should see Pokemon details like Pokemon name
+    Scenario: User navigating to Pokemon Details Page
+        Given User on the Pokemon Details page
+        When User fully loaded Pokemon details page
+        Then User should see details page
+        Then User is waiting for details to load
+        Then User should see pokemon details
 
-    Scenario: Search works correctly
-        Given I am on the Details Page
-        When I perform a search
-        Then I should call fetch data
+    Scenario: User search pokemons on Pokemon Details Page
+        Given User on the Pokemon Details page
+        When User fully loaded Pokemon details page
+        Then User should see details page
+        When User perform a search
+        Then User should intialize search
 
-    Scenario: Handle fetch error
-        Given I get a fetch error
-        When I mounted the component
-        Then I should true error
+    Scenario: User fetch error to Pokemon Details Page
+        Given User on the Pokemon Details page
+        When User fully loaded Pokemon details page
+        Then User fetch error to Pokemon Home Page

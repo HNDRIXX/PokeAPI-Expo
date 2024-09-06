@@ -1,20 +1,20 @@
 import lodash from 'lodash'
 
-import HomePage from "../../ComponentView"
 import DetailPage from "../../ComponentView";
 import { shallow, ShallowWrapper } from "enzyme"
 import { defineFeature, loadFeature } from "jest-cucumber"
-import { mockDetailPokemon, mockSpeciesPokemon, mockDetailprops } from "../../../../values";
-import { Strings } from "../../../../constants";
+import { mockDetailPokemon, mockSpeciesPokemon, mockDetailProps } from "../../../../values";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Loader } from '../../../../components';
+import * as helpers from "../../../../helpers";
 
 const feature = loadFeature('./src/pages/DetailPages/__tests__/features/ComponentView.feature');
 
 defineFeature(feature, (test) => {
-  let wrapper: ShallowWrapper
-  let instance: HomePage
-
   beforeEach(() => {
     jest.resetModules();
+    jest.doMock("react-native", () => ({ Platform: { OS: "web" } }));
+    jest.spyOn(helpers, "getOS").mockImplementation(() => "web"); 
 
     global.fetch = jest.fn((url) => {
       if (url.includes('/pokemon/')) {
@@ -28,64 +28,87 @@ defineFeature(feature, (test) => {
           json: () => Promise.resolve(mockSpeciesPokemon), 
         });
       }
-
-      return Promise.reject(new Error(Strings.somethingWentWrong));
     }) as jest.Mock;
-
-    wrapper = shallow(<DetailPage route={mockDetailprops.route} />);
-    instance = wrapper.instance() as DetailPage;
-
-    lodash.debounce = jest.fn((func) => func) as jest.Mock;
-
-    jest.spyOn(instance, 'fetchData');
-    jest.spyOn(instance, 'fetchDataDebounced');
-
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
   });
 
-  // For render/display Pokemon details
-  test("Render Pokemon Details", ({ given, when, then }) => {
-    given("I am on the Details Page", () => {})
+  // For naviigation Pokemon Details
+  test("User navigating to Pokemon Details Page", ({ given, when, then }) => {
+    let PokemonDetailsWrapper: ShallowWrapper
+    let instance: DetailPage
 
-    when("I successfully load Details Page", async () => {
-      instance.componentDidMount()
-      await new Promise(setImmediate);
-      wrapper.update()
+    given("User on the Pokemon Details page", () => {
+      PokemonDetailsWrapper = shallow(<DetailPage {...mockDetailProps} />);
+    })
+
+    when("User fully loaded Pokemon details page", () => {
+      instance = PokemonDetailsWrapper.instance() as DetailPage;
     })
     
-    then("I should see Pokemon details like Pokemon name", () => {
+    then("User should see details page", () => {
+      const pokemonDetailsContainer = PokemonDetailsWrapper
+        .find(SafeAreaView)
+        .findWhere(node => node.prop('testID') === 'detailContainer');
+
+      expect(pokemonDetailsContainer.exists()).toBe(true);
+    })
+
+    then("User is waiting for details to load", () => {
+      const loader : any = PokemonDetailsWrapper.find(Loader)
+      expect(loader.exists()).toBe(true);
+    });
+
+    then("User should see pokemon details", () => {
       expect(instance.state.data.name).toEqual(mockDetailPokemon.name);
     })
   })
 
   // For search functionality
-  test('Search works correctly', ({ given, when, then }) => {
-    given('I am on the Details Page', () => {});
+  test('User search pokemons on Pokemon Details Page', ({ given, when, then }) => {
+    let PokemonDetailsWrapper: ShallowWrapper
+    let instance: DetailPage
 
-    when('I perform a search', () => {
+    given("User on the Pokemon Details page", () => {
+      PokemonDetailsWrapper = shallow(<DetailPage {...mockDetailProps} />);
+    })
+
+    when("User fully loaded Pokemon details page", () => {
+      instance = PokemonDetailsWrapper.instance() as DetailPage;
+      jest.spyOn(instance, 'fetchDataDebounced');
+    })
+    
+    then("User should see details page", () => {
+      const pokemonDetailsContainer = PokemonDetailsWrapper
+        .find(SafeAreaView)
+        .findWhere(node => node.prop('testID') === 'detailContainer');
+
+      expect(pokemonDetailsContainer.exists()).toBe(true);
+    })
+
+    when('User perform a search', () => {
       instance.onSearch(mockDetailPokemon.name);
     });
 
-    then('I should call fetch data', () => {
+    then('User should intialize search', () => {
       expect(instance.fetchDataDebounced).toHaveBeenCalledWith(mockDetailPokemon.name);
     });
   });
 
-  // For fetch error
-  test('Handle fetch error', async ({ given, when, then }) => {
-    given('I get a fetch error', () => {
+  // For handle error
+  test('User fetch error to Pokemon Details Page', async ({ given, when, then }) => {
+    let PokemonHomeWrapper: ShallowWrapper;
+    let instance : DetailPage
+
+    given('User on the Pokemon Details page', () => {
       global.fetch = jest.fn(() => Promise.reject(new Error('Fetch error'))) as jest.Mock;
+
+      PokemonHomeWrapper = shallow(<DetailPage {...mockDetailProps} />);
     });
 
-    when('I mounted the component', async () => {
-      await instance.componentDidMount();
+    when('User fully loaded Pokemon details page', () => {
+      instance = PokemonHomeWrapper.instance() as DetailPage;
     });
 
-    then('I should true error', () => {
-      instance.setState({ error: true })
-
+    then('User fetch error to Pokemon Home Page', () => {
       expect(instance.state.error).toEqual(true);
     });
   });

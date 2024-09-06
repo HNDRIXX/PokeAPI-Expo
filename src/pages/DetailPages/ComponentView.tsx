@@ -12,7 +12,7 @@ export default class DetailPage extends ComponentController {
         const { data, search, loading, error } = this.state;
 
         return (
-            <SafeAreaView style={Styles.StyleDetails.container}>
+            <SafeAreaView style={Styles.StyleDetails.container} testID='detailContainer'>
                 <SearchBar
                     value={search}
                     onChangeText={this.onSearch}
@@ -43,7 +43,7 @@ export default class DetailPage extends ComponentController {
                                 <View style={Styles.StyleDetails.typeWrapper} nativeID='types'>
                                     {data.types.map((item, index: number) => (
                                         <Image
-                                            source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/brilliant-diamond-and-shining-pearl/${Number(item.type.url.split('/').filter(Boolean).pop())}.png` }}
+                                            source={{ uri: this.typeImage(item.type.url) }}
                                             style={Styles.StyleDetails.imageType}
                                             key={index}
                                             resizeMode="contain"

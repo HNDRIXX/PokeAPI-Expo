@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { Navigation, PokemonList, PokemonResultObj } from '../../types';
 import lodash from 'lodash';
+import { baseURL } from '../../values';
 
 interface Props { 
     navigation: Navigation['navigation']
@@ -9,6 +10,7 @@ interface Props {
 interface S {
     data: PokemonList;
     loading: boolean;
+    error: boolean;
     search: string;
 }
 
@@ -21,22 +23,23 @@ export default class ComponentController extends Component<Props, S> {
         this.state = {
             data: {
                 count: 0,
-                next: '',
+                next: baseURL,
                 previous: '',
                 results: [],
             },
             loading: true,
+            error: false,
             search: '',
         };
 
         this.navigateDetails = lodash.debounce(() => this.props.navigation.navigate('Details', { name: this.state.search }), 1000) as any;
     }
 
-    fetchData = async (url: string) => {
+    fetchData = async () => {
         try {
             this.setState({ loading: true });
 
-            const res = await fetch(url);
+            const res = await fetch(this.state.data.next);
             const data = await res.json();
     
             const pokemonPromises : Array<PokemonResultObj> = data.results.map(async (pokemon : PokemonResultObj) => {
@@ -68,7 +71,7 @@ export default class ComponentController extends Component<Props, S> {
                 }
             }));
         } catch (error) {
-            console.error(error);
+            this.setState({ error: true });
         } finally {
             this.setState({ loading: false });
         }
@@ -80,6 +83,6 @@ export default class ComponentController extends Component<Props, S> {
     }
 
     async componentDidMount () {
-        await this.fetchData('https://pokeapi.co/api/v2/pokemon?limit=10');
+        await this.fetchData();
     }
 };

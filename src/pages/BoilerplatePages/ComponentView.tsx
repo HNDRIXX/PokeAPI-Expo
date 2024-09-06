@@ -13,7 +13,7 @@ export default class HomePage extends ComponentController {
         const { data, search, loading } = this.state
 
         return (
-            <SafeAreaView style={Styles.Main.darkContainer}>
+            <SafeAreaView style={Styles.Main.darkContainer} testID='homeContainer'>
                 <StatusBar style="light" />
                 
                 <SearchBar
@@ -28,8 +28,8 @@ export default class HomePage extends ComponentController {
                     renderItem={({ item, index } : { item: PokemonResultObj, index : number }) => (
                         <PokemonCard item={item} navigation={this.props.navigation} key={index} />
                     )}
-                    onEndReached={() => this.fetchData(data.next)}
-                    ListFooterComponent={loading ? <Loader style={{ margin: 20 }} /> : null}
+                    onEndReached={() => this.fetchData()}
+                    ListFooterComponent={loading ? <Loader style={{ margin: 20 }} key="loader" /> : null}
                     onEndReachedThreshold={0.5}
                 />
             </SafeAreaView>

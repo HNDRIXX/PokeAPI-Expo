@@ -1,3 +1,5 @@
+export const baseURL = 'https://pokeapi.co/api/v2/pokemon?limit=10';
+
 export const mockPokemonList = {
     count: 1,
     next: '',
@@ -85,7 +87,13 @@ export const mockSpeciesPokemon = {
     ],
 }
 
-export const mockDetailprops = {
+export const mockHomeProps = {
+    navigation: {
+        navigate: jest.fn(),
+    } as any
+}
+
+export const mockDetailProps = {
     route: {
         params: { name: 'bulbasaur' }
     }

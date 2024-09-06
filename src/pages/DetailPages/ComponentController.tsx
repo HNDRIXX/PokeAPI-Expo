@@ -74,6 +74,13 @@ export default class ComponentController extends Component<Props, S> {
         this.fetchDataDebounced(text);
     }
 
+    typeImage = (type: string) => {
+        const urlSegments = type.split('/').filter(Boolean);
+        const typeId = Number(urlSegments.pop());
+
+        return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/brilliant-diamond-and-shining-pearl/${typeId}.png`
+    }
+
     async componentDidMount () {
         await this.fetchData(this.props.route.params.name);
     }

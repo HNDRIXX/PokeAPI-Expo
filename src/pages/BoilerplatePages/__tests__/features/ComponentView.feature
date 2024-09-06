@@ -1,19 +1,28 @@
 Feature: Pokemon List
 
-    Scenario: Render Pokemon List
-        Given I am on the Home Page
-        When I successfully load Home Page
-        Then I should have a key extract value from the list
-        Then I should see a list of Pokemon
-        Then I should see flatlist item rendered
-        Then I reach the end of the List
-    
-    Scenario: Search works correctly
-        Given I am on the Home Page
-        When I perform a search
-        Then I should navigate to the Details Page
+    Scenario: User navigating to Pokemon Home Page
+        Given User on the Pokemon Home page
+        When User fully loaded Pokemon home page
+        Then User should see home page
+        Then User should see loading
+        Then User is waiting for pokemons to load
+        Then User items should extract key
+        Then User will see pokemons loaded initially
+        Then User should see pokemons items
+        
+    Scenario: User scroll to end of list
+        Given User on the Pokemon Home page
+        When User fully loaded Pokemon home page
+        Then User scroll to end of list
+        Then User should fetch more pokemons
+        
+    Scenario: User search pokemons on Pokemon Home Page
+        Given User on the Pokemon Home page
+        When User fully loaded Pokemon home page
+        Then User perform a search
+        Then User should navigate to the Details Page
 
-    Scenario: Handle fetch error
-        Given I get a fetch error
-        When I mounted the component
-        Then I should log errors
+    Scenario: User fetch error to Pokemon Home Page
+        Given User on the Pokemon Home page
+        When User fully loaded Pokemon home page
+        Then User fetch error to Pokemon Home Page
